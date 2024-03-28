@@ -24,7 +24,7 @@ def home():
 
 @app.route('/add_tracking', methods=['POST'])
 def add_tracking_endpoint():
-    api_key = '5cdo7714t15adrs9tcuvokbmphasnpa1en26kkr9h58j6o8885cgahrqlr8unb51'
+    api_key = 'API_KEY'
     tracking_data = request.json
     add_response = add_tracking(api_key, tracking_data)
     return jsonify(add_response)
@@ -40,7 +40,7 @@ def add_tracking(api_key, tracking_data):
 
 @app.route('/remove_tracking/<asin>', methods=['GET'])
 def remove_tracking_endpoint(asin):
-    api_key = '5cdo7714t15adrs9tcuvokbmphasnpa1en26kkr9h58j6o8885cgahrqlr8unb51'
+    api_key = 'API_KEY'
     remove_response = remove_tracking(api_key, asin)
     return jsonify(remove_response)
 
@@ -53,7 +53,7 @@ def remove_tracking(api_key, asin):
 
 @app.route('/get_named_lists', methods=['GET'])
 def get_named_lists_endpoint():
-    api_key = '5cdo7714t15adrs9tcuvokbmphasnpa1en26kkr9h58j6o8885cgahrqlr8unb51'
+    api_key = 'API_KEY'
     named_lists_response = get_named_lists(api_key)
     return jsonify(named_lists_response)
 
@@ -67,7 +67,7 @@ def get_named_lists(api_key):
 
 @app.route('/get_notifications/<since>', methods=['GET'])
 def get_notifications_endpoint(since):
-    api_key = '5cdo7714t15adrs9tcuvokbmphasnpa1en26kkr9h58j6o8885cgahrqlr8unb51'
+    api_key = 'API_KEY'
     notifications_response = get_notifications(api_key, since)
     return jsonify(notifications_response)
 
