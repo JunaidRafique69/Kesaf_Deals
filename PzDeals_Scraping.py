@@ -11,27 +11,29 @@ driver = webdriver.Chrome()
 product_urls = []
 
 try:
-    pn = 0
-    while True:
-        url = f'https://www.pzdeals.com/?page={pn}'
+    pages = [x for x in range(0, 1000)]
+    for page in pages:
+        url = f'https://simplexdeals.com/collections/all-products?page={page}'
         driver.get(url)
 
         # Wait for products to load
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.XPATH, "//li[@class=' on-sale text-center']"))
+            EC.presence_of_all_elements_located((By.XPATH, "//div[@class='product grid__item medium-up--one-third "
+                                                           "col2 small--one-half slide-up-animation animated']"))
         )
 
-        products = driver.find_elements(By.XPATH, "//li[@class=' sold-out on-sale text-center']")
+        products = driver.find_elements(By.XPATH, "//div[@class='product grid__item medium-up--one-third col2 "
+                                                  "small--one-half slide-up-animation animated']")
 
         if len(products) == 0:
-            print(f"No more products on page {pn}, exiting loop.")
+            print(f"No more products on page {page}, exiting loop.")
             break
 
         for product in products:
             try:
                 product.click()
                 product_link = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, "//div[@class='is_desktop']//a"))
+                    EC.element_to_be_clickable((By.XPATH, "//div[@class='product-single__cart-submit-wrapper']//a"))
                 )
                 url = product_link.get_attribute('href')
                 print(url)
@@ -47,21 +49,14 @@ try:
             except Exception as e:
                 print(f"An unexpected error occurred for product: {str(e)}")
                 continue  # Continue to the next product
-
-        pn += 1  # Move to the next page
+        with open('product_urls_.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Product URL'])
+            writer.writerows([[url] for url in product_urls])
+        print('Product URLs stored in "product_urls.csv"')
 
 except Exception as ex:
     print(f"An error occurred: {str(ex)}")
 
 finally:
     driver.quit()
-
-# Save product URLs to CSV
-if product_urls:
-    with open('product_urls_.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['Product URL'])
-        writer.writerows([[url] for url in product_urls])
-    print('Product URLs stored in "product_urls.csv"')
-else:
-    print('No product URLs found.')
