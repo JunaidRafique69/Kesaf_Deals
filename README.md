@@ -42,3 +42,6 @@ Get_Notified.py
 
 For Getting List of own Products that is added by you using Keepa API
 Get_List.py
+
+
+Keepa Integration endpoints are in app.py and pzdeals.com scraping code also init
